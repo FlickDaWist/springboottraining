@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.CommonResponse;
+import com.example.demo.dto.ProductDTO;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,8 +21,9 @@ public class ProductController {
     }
 
     @PostMapping("")
-    public CommonResponse addProduct() {
+    public CommonResponse addProduct(@RequestBody ProductDTO productDTO) {
         //TODO: Add code to post here
+
         return new CommonResponse("Successfully add new product");
     }
 
