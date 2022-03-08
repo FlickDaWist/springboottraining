@@ -1,6 +1,9 @@
 package com.example.demo.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class ProductDTO {
+    @JsonProperty("product-name")
     private String productName;
     private Long price;
     private Long stock;
