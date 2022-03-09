@@ -31,8 +31,13 @@ public class ProductService {
         return (List<ProductEntity>) repository.findAll();
     }
 
-    public List<ProductEntity> fetch(boolean isInStock){
-        return isInStock? fetchAllInStock() : fetchAll();
+    public List<ProductEntity> fetch(long price){
+        //if price set <= 0 return all the data without filter
+        return price > 0 ? fetchByPriceUnder(price) : fetchAll();
+    }
+
+    public List<ProductEntity> fetchByPriceUnder(long price){
+        return repository.findByPriceLessThanEqual(price);
     }
 
     public List<ProductEntity> fetchAllInStock(){
