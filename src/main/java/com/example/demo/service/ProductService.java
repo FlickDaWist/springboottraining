@@ -1,9 +1,13 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.ProductDTO;
+import com.example.demo.dto.UpdateStockDTO;
 import com.example.demo.entity.ProductEntity;
 import com.example.demo.repository.ProductRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ProductService {
@@ -21,5 +25,31 @@ public class ProductService {
 
         repository.save(product);
         return product;
+    }
+
+    public List<ProductEntity> fetchAll(){
+        return (List<ProductEntity>) repository.findAll();
+    }
+
+    public List<ProductEntity> fetch(boolean isInStock){
+        return isInStock? fetchAllInStock() : fetchAll();
+    }
+
+    public List<ProductEntity> fetchAllInStock(){
+        return repository.findByStockGreaterThan(0);
+    }
+
+    public void delete(long id){
+        repository.deleteById(id);
+    }
+
+    public ProductEntity getById(long id){
+        return repository.findById(id).orElse(null);
+    }
+
+    public ProductEntity updateStock(UpdateStockDTO request){
+        ProductEntity product = repository.findById(request.getId()).orElse(new ProductEntity());
+        product.setStock(request.getStock() + product.getStock());
+        return repository.save(product);
     }
 }

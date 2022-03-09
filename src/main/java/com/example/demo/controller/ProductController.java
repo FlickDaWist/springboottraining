@@ -2,9 +2,12 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.CommonResponse;
 import com.example.demo.dto.ProductDTO;
+import com.example.demo.dto.UpdateStockDTO;
 import com.example.demo.entity.ProductEntity;
 import com.example.demo.service.ProductService;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/v1/product")
@@ -16,15 +19,17 @@ public class ProductController {
     }
 
     @GetMapping("")
-    public CommonResponse getProducts() {
+    public List<ProductEntity> getProducts(@RequestParam(value = "inStock", defaultValue = "0") boolean isInStock) {
         //TODO: Add code to get all product list here
-        return new CommonResponse("Dummy Products");
+        return service.fetch(isInStock);
     }
 
     @GetMapping("{id}")
-    public CommonResponse getProduct(@PathVariable("id") String id) {
+    public ProductEntity getProduct(@PathVariable("id") String id) {
         //TODO: Add code to get product here
-        return new CommonResponse("Dummy Product");
+//        return null;
+//        return new CommonResponse("Dummy Product");
+        return service.getById(Long.parseLong(id));
     }
 
     @PostMapping("")
@@ -34,14 +39,15 @@ public class ProductController {
     }
 
     @PutMapping("/stock")
-    public CommonResponse updateStock() {
+    public ProductEntity updateStock(@RequestBody UpdateStockDTO stock) {
         //TODO: Add code to post here
-        return new CommonResponse("Successfully update stock");
+        return service.updateStock(stock);
     }
 
     @DeleteMapping("{id}")
     public CommonResponse deleteProduct(@PathVariable("id") String id) {
         //TODO: Add code to get product list here
+        service.delete(Long.parseLong(id));
         return new CommonResponse("Successfully delete product");
     }
 }
